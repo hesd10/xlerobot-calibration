@@ -1,0 +1,16 @@
+# Copy to ~/.xlerobot/calibration/config.yaml and edit for your robot.
+# The toolkit never stores raw credentials here.
+robot:
+  name: xlerobot
+  # Stable camera roles. Do not swap these after intrinsics are collected.
+  cameras:
+    head: auto
+    left_wrist: auto
+    right_wrist: auto
+  servo_bus: auto
+workflow:
+  workspace: ~/.xlerobot/calibration
+  host: 127.0.0.1
+  port: 8422
+  # Hardware adapters are selected only when a stage is started.
+  adapter: legacy

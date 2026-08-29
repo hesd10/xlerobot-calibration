@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "xlerobot-calibration"
+version = "0.1.0"
+description = "Guided, traceable calibration workflow for XLeRobot"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "Apache-2.0"}
+authors = [{name = "XLeRobot contributors"}]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+]
+dependencies = []
+
+[project.optional-dependencies]
+legacy = [
+  # Provides scservo_sdk, imported by core/servos.py:RawServoBus, which every
+  # stage that reads a joint goes through. It is an optional extra of lerobot
+  # ("lerobot[feetech]"), not a default one, and XLeRobot's install guide says
+  # plain "pip install -e ." -- so a working XLeRobot is no guarantee of having
+  # it. Teleop does not need it either, because that path goes through
+  # lerobot's motor layer while we deliberately bypass the firmware's
+  # calibration and read raw counts. Without it the UI starts, the first stage
+  # passes, and stage 2 dies on ModuleNotFoundError with nothing on screen
+  # saying what to install.
+  "feetech-servo-sdk>=1.0,<2.0",
+  "mujoco>=3.0",
+  "numpy>=1.24",
+  "opencv-contrib-python>=4.8",
+  "PyYAML>=6",
+  "scipy>=1.10",
+]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[project.scripts]
+xlerobot-calibrate = "xlerobot_calibration_tool.app:main"
+
+[tool.setuptools.packages.find]
+include = ["xlerobot_calibration_tool*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
